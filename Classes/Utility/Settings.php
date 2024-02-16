@@ -34,9 +34,6 @@ class Settings extends AbstractEncryptionUtility
     {
         /** @var ContentObjectRenderer|null $contentObject */
         $contentObject = ($request ?? $GLOBALS['TYPO3_REQUEST'])?->getAttribute('currentContentObject');
-        if ($contentObject === null) {
-            return [];
-        }
 
         if ($makeSettingsRenderable === true) {
             $settings = self::makeConfigurationArrayRenderable($settings);
@@ -47,7 +44,7 @@ class Settings extends AbstractEncryptionUtility
             if (str_ends_with($key, '.')) {
                 $keyWithoutDot = substr($key, 0, -1);
                 if (array_key_exists($keyWithoutDot, $settings)) {
-                    $result[$keyWithoutDot] = $contentObject->cObjGetSingle(
+                    $result[$keyWithoutDot] = $contentObject?->cObjGetSingle(
                         is_array($settings[$keyWithoutDot])
                             ? $settings[$keyWithoutDot]['_typoScriptNodeValue'] : $settings[$keyWithoutDot],
                         $value
